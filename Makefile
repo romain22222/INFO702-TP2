@@ -22,4 +22,3 @@ testGrayLevelImage2D: testGrayLevelImage2D.o ${MODULE_OBJ}
 
 clean:
 	rm -f ${EXEC_PRG} ${MODULE_OBJ} ${EXEC_OBJ}
-
