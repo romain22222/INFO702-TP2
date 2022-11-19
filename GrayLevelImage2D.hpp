@@ -69,6 +69,9 @@ public:
   bool importPGM( std::istream & input );
   bool exportPGM( std::ostream & output, bool ascii = true );
 
+  void filtrageMedian(int k);
+
+  GrayLevelImage2D histogramShown();
 
 private:
   // Calcule l'indice dans m_data du pixel (x,y).
@@ -81,6 +84,14 @@ private:
   int       m_width;
   // la hauteur
   int       m_height;
+};
+
+class Histogram {
+public:
+	void init (GrayLevelImage2D & img);
+	int egalisation(int j) const;
+	std::vector<double> _histo;
+	std::vector<double> _cumhisto;
 };
 
 

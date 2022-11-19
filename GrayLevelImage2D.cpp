@@ -1,4 +1,6 @@
 #include "GrayLevelImage2D.hpp"
+#include <list>
+#include <algorithm>
 
 GrayLevelImage2D::Iterator::Iterator( GrayLevelImage2D& image, int x, int y )
 : Container::iterator( image.m_data.begin() + image.index( x, y ) ) {}
@@ -12,7 +14,7 @@ GrayLevelImage2D::Iterator GrayLevelImage2D::begin() {
 }
 
 GrayLevelImage2D::Iterator GrayLevelImage2D::end() {
-	return start(m_width-1, m_height-1);
+	return start(m_width, m_height-1);
 }
 
 std::string readline(std::istream &input) {
@@ -26,15 +28,13 @@ std::string readline(std::istream &input) {
 bool GrayLevelImage2D::importPGM(std::istream &input) {
 	if ( ! input.good() ) return false;
 	std::string format = readline(input);
-	std::cout << "TEST" << std::endl;
 	std::string line = readline(input);
 	std::string delim = " ";
 	m_width = std::stoi(line.substr(0, line.find(delim)));
 	line.erase(0, line.find(delim) + delim.length());
 	m_height = std::stoi(line);
-	std::cout << m_width << " " << m_height << " " << format << std::endl;
-	std::cout << readline(input) << std::endl; // grayscale range
 	fill(0);
+	readline(input);
 	if (format == "P5") {
 		input >> std::noskipws;
 		unsigned char v;
@@ -68,4 +68,70 @@ bool GrayLevelImage2D::exportPGM(std::ostream &output, bool ascii) {
 		}
 	}
 	return true;
+}
+
+void GrayLevelImage2D::filtrageMedian(int k) {
+	GrayLevelImage2D copy(*this);
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
+			std::list<int> table;
+			int nbE = 0;
+			for (int x = 0; x < 2*k+1; ++x) {
+				for (int y = 0; y < 2*k+1; ++y) {
+					if (0 <= j+x-k && j+x-k < m_width && 0 <= i+y-k && i+y-k < m_height) {
+						table.push_front(at(j+x-k,i+y-k));
+						nbE++;
+					}
+				}
+			}
+			table.sort();
+			auto it = table.begin();
+			for (int l = 0; l < nbE/2; ++l) {
+				it++;
+			}
+			copy.at(j,i) = *it;
+		}
+	}
+	this->m_data = copy.m_data;
+}
+
+void Histogram::init(GrayLevelImage2D &img) {
+	_histo = std::vector<double>(256,0);
+	for ( auto p : img )
+	{
+		_histo[(double)(p)]++;
+	}
+	_cumhisto = std::vector<double>(_histo);
+	for (auto it = _cumhisto.begin()+1; it != _cumhisto.end() ; it++) {
+		*it += *(it-1);
+	}
+}
+
+int Histogram::egalisation(int j) const {
+	return 255 * _cumhisto[j];
+}
+
+GrayLevelImage2D GrayLevelImage2D::histogramShown() {
+	Histogram h;
+	h.init(*this);
+	auto copy = std::vector<double>(h._histo);
+	std::sort(copy.begin(), copy.end());
+	double max = *(copy.end()-1);
+	GrayLevelImage2D shownHisto(512,256,255);
+	for (int j = 0; j < 256; ++j) {
+		for (int i = 0; i < 256; ++i) {
+			if (h._histo[i]*256/max>=256-j) {
+				shownHisto.at(i,j) = 0;
+			}
+		}
+	}
+	max = *(h._cumhisto.end()-1);
+	for (int j = 0; j < 256; ++j) {
+		for (int i = 0; i < 256; ++i) {
+			if (h._cumhisto[i]*256/max>=256-j) {
+				shownHisto.at(i+256,j) = 0;
+			}
+		}
+	}
+	return shownHisto;
 }
