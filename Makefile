@@ -8,7 +8,8 @@ EXEC_SRC=\
 	filtrage-median.cpp\
 	histogram.cpp\
 	egalise.cpp\
-	netlify.cpp
+	netlify.cpp\
+	bruit-gaussian.cpp
 
 MODULE_SRC=\
 	GrayLevelImage2D.cpp
@@ -39,6 +40,9 @@ egalise: egalise.o ${MODULE_OBJ}
 	${LD} ${MODULE_OBJ} $< -o $@
 
 netlify: netlify.o ${MODULE_OBJ}
+	${LD} ${MODULE_OBJ} $< -o $@
+
+bruit-gaussian: bruit-gaussian.o ${MODULE_OBJ}
 	${LD} ${MODULE_OBJ} $< -o $@
 
 .cpp.o: %.cpp %.hpp

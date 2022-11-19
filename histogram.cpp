@@ -10,7 +10,7 @@ int main( int argc, char** argv )
 	typedef GrayLevelImage2D::Iterator  Iterator;
 	if ( argc < 2 )
 	{
-		std::cerr << "Usage: filtre-median <input.pgm>" << std::endl;
+		std::cerr << "Usage: histogram <input.pgm>" << std::endl;
 		return 0;
 	}
 	GrayLevelImage2D img;

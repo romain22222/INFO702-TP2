@@ -10,7 +10,7 @@ int main( int argc, char** argv )
 	typedef GrayLevelImage2D::Iterator  Iterator;
 	if ( argc < 3 )
 	{
-		std::cerr << "Usage: filtre-median <input.pgm> <alpha>" << std::endl;
+		std::cerr << "Usage: netlify <input.pgm> <alpha>" << std::endl;
 		return 0;
 	}
 	GrayLevelImage2D img;
