@@ -8,9 +8,9 @@ int main( int argc, char** argv )
 {
 	typedef GrayLevelImage2D::GrayLevel GrayLevel;
 	typedef GrayLevelImage2D::Iterator  Iterator;
-	if ( argc < 2 )
+	if ( argc < 3 )
 	{
-		std::cerr << "Usage: filtre-median <input.pgm>" << std::endl;
+		std::cerr << "Usage: filtre-median <input.pgm> <alpha>" << std::endl;
 		return 0;
 	}
 	GrayLevelImage2D img;
@@ -22,10 +22,9 @@ int main( int argc, char** argv )
 		return 1;
 	}
 	input.close();
-
-	auto histogramOutput = img.histogramShown();
-	ofstream output( "histogram_" + std::string(argv[1]) ); // récupère le 2ème argument.
-	ok = histogramOutput.exportPGM( output, false );
+	img.rendreNet(stod(argv[2]));
+	ofstream output( "netlified_" + std::string(argv[1]) ); // récupère le 2ème argument.
+	ok = img.exportPGM( output, false );
 	if ( !ok )
 	{
 		std::cerr << "Error writing output file." << std::endl;

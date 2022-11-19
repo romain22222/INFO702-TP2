@@ -6,7 +6,9 @@ EXEC_SRC=\
 	bruit-impulsionnel.cpp\
 	double-brightness.cpp\
 	filtrage-median.cpp\
-	histogram.cpp
+	histogram.cpp\
+	egalise.cpp\
+	netlify.cpp
 
 MODULE_SRC=\
 	GrayLevelImage2D.cpp
@@ -31,6 +33,12 @@ filtrage-median: filtrage-median.o ${MODULE_OBJ}
 	${LD} ${MODULE_OBJ} $< -o $@
 
 histogram: histogram.o ${MODULE_OBJ}
+	${LD} ${MODULE_OBJ} $< -o $@
+
+egalise: egalise.o ${MODULE_OBJ}
+	${LD} ${MODULE_OBJ} $< -o $@
+
+netlify: netlify.o ${MODULE_OBJ}
 	${LD} ${MODULE_OBJ} $< -o $@
 
 .cpp.o: %.cpp %.hpp

@@ -9,3 +9,11 @@
 /test-church.pgm
 /testGrayLevelImage2D
 /unbruit-church.pgm
+/histogram_egalise_church.pgm
+/egalise_church.pgm
+/egalise
+/egalise_lena.pgm
+/histogram_egalise_lena.pgm
+/netlified_church.pgm
+/netlified_lena.pgm
+/netlify

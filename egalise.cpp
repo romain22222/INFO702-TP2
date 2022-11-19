@@ -23,9 +23,9 @@ int main( int argc, char** argv )
 	}
 	input.close();
 
-	auto histogramOutput = img.histogramShown();
-	ofstream output( "histogram_" + std::string(argv[1]) ); // récupère le 2ème argument.
-	ok = histogramOutput.exportPGM( output, false );
+	img.egalise();
+	ofstream output( "egalise_" + std::string(argv[1]) ); // récupère le 2ème argument.
+	ok = img.exportPGM( output, false );
 	if ( !ok )
 	{
 		std::cerr << "Error writing output file." << std::endl;

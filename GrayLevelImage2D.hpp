@@ -73,6 +73,12 @@ public:
 
   GrayLevelImage2D histogramShown();
 
+  void egalise();
+
+  void rendreNet(double alpha);
+
+  void netlifyAt(GrayLevelImage2D& copy, int i, int j, double alpha);
+
 private:
   // Calcule l'indice dans m_data du pixel (x,y).
   int index( int x, int y ) const {

@@ -101,6 +101,9 @@ void Histogram::init(GrayLevelImage2D &img) {
 	{
 		_histo[(double)(p)]++;
 	}
+	for (auto& v : _histo) {
+		v/=img.h()*img.w();
+	}
 	_cumhisto = std::vector<double>(_histo);
 	for (auto it = _cumhisto.begin()+1; it != _cumhisto.end() ; it++) {
 		*it += *(it-1);
@@ -134,4 +137,31 @@ GrayLevelImage2D GrayLevelImage2D::histogramShown() {
 		}
 	}
 	return shownHisto;
+}
+
+void GrayLevelImage2D::egalise() {
+	Histogram h;
+	h.init(*this);
+	for (auto& p : *this) {
+		p = h.egalisation(p);
+	}
+}
+
+void GrayLevelImage2D::rendreNet(double alpha) {
+	GrayLevelImage2D copy(*this);
+	for (int j = 0; j < m_width; ++j) {
+		for (int i = 0; i < m_height; ++i) {
+			netlifyAt(copy, i, j, alpha);
+		}
+	}
+	*this = copy;
+}
+
+void GrayLevelImage2D::netlifyAt(GrayLevelImage2D &copy, int i, int j, double alpha) {
+	double newVal = at(i,j) * (1 + alpha);
+	if (i > 0) newVal -= at(i-1,j) * (alpha/4);
+	if (i < m_width - 1) newVal -= at(i+1,j) * (alpha/4);
+	if (j > 0) newVal -= at(i,j-1) * (alpha/4);
+	if (j < m_height - 1) newVal -= at(i,j+1) * (alpha/4);
+	copy.at(i,j) = newVal;
 }
