@@ -1,1 +1,11 @@
 *.o
+/bruit-impulsionnel
+/double-brightness
+/filtrage-median
+/histogram
+/histogram_church.pgm
+/histogram_lena.pgm
+/test.pgm
+/test-church.pgm
+/testGrayLevelImage2D
+/unbruit-church.pgm
